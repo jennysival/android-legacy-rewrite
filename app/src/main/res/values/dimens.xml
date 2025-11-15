@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_8_dp">8dp</dimen>
+    <dimen name="app_12_dp">12dp</dimen>
+    <dimen name="app_16_dp">16dp</dimen>
+    <dimen name="app_24_dp">24dp</dimen>
+    <dimen name="app_48_dp">48dp</dimen>
+    <dimen name="app_52_dp">52dp</dimen>
+</resources>
