@@ -1,22 +1,33 @@
 package com.picpay.desafio.android.data.repository
 
-import com.picpay.desafio.android.data.remote.RetrofitService
+import com.picpay.desafio.android.data.local.UserDao
+import com.picpay.desafio.android.data.remote.PicPayService
 import com.picpay.desafio.android.domain.mapper.UserDtoMapper
 import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.domain.repository.UserRepository
 
-class UserRepositoryImpl(private val userMapper: UserDtoMapper) : UserRepository {
-
-    private var cache: List<UserModel>? = null
+class UserRepositoryImpl(
+    private val apiService: PicPayService,
+    private val userMapper: UserDtoMapper,
+    private val userDao: UserDao
+) : UserRepository {
 
     override suspend fun getUsers(): List<UserModel> {
-        cache?.let { return it }
+        return try {
+            val cachedUsers = userDao.getUsers()
+            if (cachedUsers.isNotEmpty()) {
+                return userMapper.mapCachedUsersModelList(cachedUsers)
+            }
 
-        val response = RetrofitService.apiService.getUsers()
-        val mappedUsers = userMapper.mapUsersModelList(response)
+            val remoteUsers = apiService.getUsers()
+            val mappedUsersDb = userMapper.mapRemoteUsersListToDb(remoteUsers)
 
-        cache = mappedUsers
+            userDao.insertUsers(mappedUsersDb)
 
-        return mappedUsers
+            val mappedUsers = userMapper.mapCachedUsersModelList(userDao.getUsers())
+            mappedUsers
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
