@@ -4,26 +4,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.databinding.ActivityMainBinding
-import com.picpay.desafio.android.domain.mapper.UserDtoMapper
 import com.picpay.desafio.android.domain.model.UserModel
-import com.picpay.desafio.android.domain.usecase.GetUsersUseCase
 import com.picpay.desafio.android.ui.user.adapter.UserListAdapter
 import com.picpay.desafio.android.ui.user.viewModel.UserViewModel
-import com.picpay.desafio.android.ui.user.viewModel.UserViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val userDtoMapper = UserDtoMapper()
-    private val userRepository = UserRepositoryImpl(userMapper = userDtoMapper)
-    private val getUsersUseCase = GetUsersUseCase(userRepository = userRepository)
-
     private lateinit var binding: ActivityMainBinding
-    private lateinit var userViewModel: UserViewModel
+
+    private val userViewModel: UserViewModel by viewModel()
 
     private val adapter: UserListAdapter by lazy { UserListAdapter() }
 
@@ -33,20 +26,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initViewModel()
         initObserver()
         setUpRecyclerView()
         userViewModel.getUsers()
-    }
-
-    private fun initViewModel() {
-        userViewModel =
-            ViewModelProvider(
-                this,
-                UserViewModelFactory(
-                    getUsersUseCase = getUsersUseCase
-                )
-            )[UserViewModel::class.java]
     }
 
     private fun initObserver() {
