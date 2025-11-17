@@ -18,8 +18,13 @@ class UserViewModel(private val useCase: GetUsersUseCase) : ViewModel() {
         viewModelScope.launch {
             _userListState.value = ViewState.Loading
 
-            val result = useCase.getUsers()
-            _userListState.value = result
+            runCatching {
+                useCase.getUsers()
+            }.onSuccess { users ->
+                _userListState.value = ViewState.Success(users)
+            }.onFailure { error ->
+                _userListState.value = ViewState.Error(error)
+            }
         }
     }
 }
