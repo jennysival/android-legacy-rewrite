@@ -44,6 +44,14 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 dependencies {
@@ -88,8 +96,11 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.mockk.android)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     debugImplementation(libs.androidx.ui.tooling)

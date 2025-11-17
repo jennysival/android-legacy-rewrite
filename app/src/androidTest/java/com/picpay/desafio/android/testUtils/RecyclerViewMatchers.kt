@@ -1,4 +1,4 @@
-package com.picpay.desafio.android
+package com.picpay.desafio.android.testUtils
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
