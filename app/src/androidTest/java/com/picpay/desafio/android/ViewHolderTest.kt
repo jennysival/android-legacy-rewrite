@@ -5,9 +5,9 @@ import android.widget.FrameLayout
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.picpay.desafio.android.databinding.ListItemUserBinding
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.ui.MainActivity
 import com.picpay.desafio.android.ui.user.adapter.UserListItemViewHolder
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +29,7 @@ class ViewHolderTest {
 
             val viewHolder = UserListItemViewHolder(itemBinding)
 
-            val item = UserModel("img", "name", 1, "username")
+            val item = UserUIModel("img", "name", 1, "username")
 
             viewHolder.bind(item)
 

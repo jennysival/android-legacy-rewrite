@@ -1,10 +1,10 @@
-package com.picpay.desafio.android.domain.model
+package com.picpay.desafio.android.ui.user.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UserModel(
+data class UserUIModel(
     val img: String,
     val name: String,
     val id: Int,

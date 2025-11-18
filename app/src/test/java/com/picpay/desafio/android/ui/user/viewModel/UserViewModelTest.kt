@@ -1,18 +1,19 @@
 package com.picpay.desafio.android.ui.user.viewModel
 
 import androidx.lifecycle.Observer
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.domain.usecase.GetUsersUseCase
 import com.picpay.desafio.android.testRulesCoroutinesLiveData
 import com.picpay.desafio.android.ui.ViewState
-import com.picpay.desafio.android.userModelList
+import com.picpay.desafio.android.ui.user.mapper.UserDtoMapperUI
+import com.picpay.desafio.android.ui.user.model.UserUIModel
+import com.picpay.desafio.android.userDomainList
+import com.picpay.desafio.android.userUIList
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verifyOrder
-import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -21,8 +22,12 @@ import org.junit.Test
 class UserViewModelTest {
 
     private val useCaseMock = mockk<GetUsersUseCase>()
-    private val subject = UserViewModel(useCaseMock)
-    private val userListObserver = mockk<Observer<ViewState<List<UserModel>>>>()
+    private val mapperMock = mockk<UserDtoMapperUI>()
+    private val subject = UserViewModel(
+        useCase = useCaseMock,
+        mapperUI = mapperMock
+    )
+    private val userListObserver = mockk<Observer<ViewState<List<UserUIModel>>>>()
 
     @get:Rule
     val rule = testRulesCoroutinesLiveData
@@ -39,17 +44,17 @@ class UserViewModelTest {
 
     @Test
     fun `userListState should be Loading then Success when useCase returns a list`() {
-        runBlocking {
-            coEvery { useCaseMock.getUsers() } returns userModelList
-            subject.userListState.observeForever(userListObserver)
+        coEvery { useCaseMock.getUsers() } returns userDomainList
+        coEvery { mapperMock.mapUserDomainToUserUI(userDomainList) } returns userUIList
+        subject.userListState.observeForever(userListObserver)
 
-            subject.getUsers()
+        subject.getUsers()
 
-            verifyOrder {
-                userListObserver.onChanged(ViewState.Loading)
-                userListObserver.onChanged(ViewState.Success(userModelList))
-            }
+        verifyOrder {
+            userListObserver.onChanged(ViewState.Loading)
+            userListObserver.onChanged(ViewState.Success(userUIList))
         }
+
     }
 
     @Test
