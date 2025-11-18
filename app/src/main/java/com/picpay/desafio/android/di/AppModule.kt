@@ -6,9 +6,10 @@ import com.picpay.desafio.android.data.local.UserDao
 import com.picpay.desafio.android.data.local.UserDatabase
 import com.picpay.desafio.android.data.remote.PicPayService
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
-import com.picpay.desafio.android.domain.mapper.UserDtoMapper
+import com.picpay.desafio.android.data.mapper.UserDtoMapperData
 import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.domain.usecase.GetUsersUseCase
+import com.picpay.desafio.android.ui.user.mapper.UserDtoMapperUI
 import com.picpay.desafio.android.ui.user.viewModel.UserViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -55,7 +56,7 @@ val databaseModule = module {
 }
 
 val repositoryModule = module {
-    single { UserDtoMapper() }
+    single { UserDtoMapperData() }
     single<UserRepository> { UserRepositoryImpl(
         userMapper = get(),
         apiService = get(),
@@ -68,5 +69,6 @@ val useCaseModule = module {
 }
 
 val viewModelModule =  module {
-    viewModel { UserViewModel(useCase = get()) }
+    single { UserDtoMapperUI() }
+    viewModel { UserViewModel(useCase = get(), mapperUI = get()) }
 }

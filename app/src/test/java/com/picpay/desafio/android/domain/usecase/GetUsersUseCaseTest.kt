@@ -1,7 +1,7 @@
 package com.picpay.desafio.android.domain.usecase
 
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
-import com.picpay.desafio.android.userModelList
+import com.picpay.desafio.android.userDomainList
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -17,10 +17,10 @@ class GetUsersUseCaseTest {
     @Test
     fun `when getUsers is called with successful result should return UserModel list`() {
         runTest {
-            coEvery { repoMock.getUsers() } returns userModelList
+            coEvery { repoMock.getUsers() } returns userDomainList
             val result = subject.getUsers()
 
-            assertEquals(userModelList, result)
+            assertEquals(userDomainList, result)
         }
     }
 

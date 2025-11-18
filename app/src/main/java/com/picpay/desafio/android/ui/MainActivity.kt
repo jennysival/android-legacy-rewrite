@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.databinding.ActivityMainBinding
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.ui.user.adapter.UserListAdapter
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 import com.picpay.desafio.android.ui.user.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         binding.userListProgressBar.visibility = View.GONE
     }
 
-    private fun handleSuccessState(data: List<UserModel>) {
+    private fun handleSuccessState(data: List<UserUIModel>) {
         hideLoading()
         adapter.users = data
     }

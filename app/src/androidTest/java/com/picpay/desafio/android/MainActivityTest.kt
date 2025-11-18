@@ -8,10 +8,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.testUtils.FakeViewModel
 import com.picpay.desafio.android.ui.MainActivity
 import com.picpay.desafio.android.ui.ViewState
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
@@ -57,7 +57,7 @@ class MainActivityTest {
 
         fakeViewModel.postStateValue(
             ViewState.Success(
-                listOf(UserModel("img", "name", 1, "username"))
+                listOf(UserUIModel("img", "name", 1, "username"))
             )
         )
 
