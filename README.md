@@ -22,11 +22,11 @@ O projeto segue os princípios da Clean Architecture, dividindo o código em cam
 app/
 ├── data/
 │   ├── local/           
+│   ├── mapper/           
 │   ├── remote/          
 │   ├── repository/      
 │
 ├── domain/
-│   ├── mapper/          
 │   ├── model/           
 │   ├── repository/      
 │   ├── usecase/         
@@ -34,6 +34,8 @@ app/
 ├── ui/
 │   ├── user/
 │   │   ├── adapter/     
+│   │   ├── mapper/     
+│   │   ├── model/     
 │   │   ├── viewModel/   
 │   ├── MainActivity     
 │   ├── ViewState        
@@ -84,7 +86,7 @@ Para reforçar o isolamento entre as camadas da arquitetura, foi implementado o 
 
 - **Proteção das Camadas:** O Mapper impede que modelos da camada de dados (como objetos do Retrofit ou Room) "vazem" para a camada de domínio ou UI. Isso protege a aplicação contra mudanças na API.
 - **Princípio da Responsabilidade Única:** A lógica de conversão fica centralizada, tornando o código mais limpo e fácil de manter.
-- **Modelos Específicos:** Cada camada trabalha com seu próprio modelo (`User` na API, `UserDbModel` no banco de dados, `UserModel` no domínio/UI), otimizado para sua responsabilidade.
+- **Modelos Específicos:** Cada camada trabalha com seu próprio modelo (`User` na API, `UserDbModel` no banco de dados, `UserDomainModel` no domínio e `UserUIModel` na UI), otimizado para sua responsabilidade.
 
 ---
 
@@ -92,7 +94,7 @@ Para reforçar o isolamento entre as camadas da arquitetura, foi implementado o 
 Coroutines foram a escolha principal para gerenciar operações assíncronas, como chamadas de rede e acesso ao banco de dados.
 
 - **viewModelScope:** No ViewModel, as operações são lançadas dentro do viewModelScope. Isso integra as coroutines ao ciclo de vida do ViewModel, garantindo que qualquer operação em andamento seja automaticamente cancelada quando o ViewModel é destruído. Essa prática previne memory leaks e processamento desnecessário.
-- **Funções suspend:** As camadas de Repository e UseCase utilizam suspend functions. Isso permite que elas executem operações de longa duração (como I/O de rede ou banco de dados) sem bloquear a thread principal, garantindo que a interface do usuário permaneça sempre responsiva.
+- **Funções suspend:** As camadas de Repository e UseCase utilizam suspend functions. Isso permite que elas executem operações de longa duração sem bloquear a thread principal, garantindo que a interface do usuário permaneça sempre responsiva.
 - **Legibilidade:** O código assíncrono se torna sequencial e fácil de entender, especialmente com o uso de runCatching, que simplifica o tratamento de sucesso e erro de forma declarativa.
 
 ---
@@ -116,12 +118,10 @@ A injeção de dependência é gerenciada pelo **Koin**, uma biblioteca leve e p
 ---
 
 ## 8. Estratégia de Tratamento de Erros
-Combinei:
+A estratégia de tratamento de erros foi centralizada na camada de **ViewModel**, mantendo as camadas inferiores (Repository e UseCase) mais limpas e focadas apenas na execução das chamadas.
 
-- `runCatching` no ViewModel
-- `try/catch` no Repository
-
-Assim, nenhum erro estoura para a UI, evito crash e toda falha é tratada de forma segura.
+- **Segurança com `runCatching` no ViewModel:** O tratamento ocorre na camada de apresentação. Ao chamar o UseCase, o ViewModel utiliza o bloco `runCatching`, que encapsula a execução da Coroutine. 
+- A escolha pelo runCatching promove um código mais idiomático e funcional. Ele encapsula o resultado da operação (sucesso ou falha) em um objeto Result, eliminando a verbosidade dos blocos try-catch tradicionais e permitindo o tratamento de erros de forma encadeada e legível (.onSuccess / .onFailure).
 
 ---
 
@@ -131,7 +131,7 @@ Assim, nenhum erro estoura para a UI, evito crash e toda falha é tratada de for
 Foram testados:
 - ViewModel
 - UseCase
-- Mapper
+- Mappers
 - Repository
 
 Ferramentas:
