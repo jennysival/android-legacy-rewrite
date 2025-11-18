@@ -1,35 +1,45 @@
 package com.picpay.desafio.android
 
-import com.picpay.desafio.android.data.local.UserDbModel
+import com.picpay.desafio.android.data.local.model.UserDbModel
 import com.picpay.desafio.android.data.remote.model.User
-import com.picpay.desafio.android.domain.model.UserModel
+import com.picpay.desafio.android.domain.model.UserDomainModel
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 
-private val stringTest = "test"
-private val intTest = 1
+private const val STRING_TEST = "test"
+private const val INT_TEST = 1
 
 val userApiList = listOf(
     User(
-        img = stringTest,
-        name = stringTest,
-        id = intTest,
-        username = stringTest
+        img = STRING_TEST,
+        name = STRING_TEST,
+        id = INT_TEST,
+        username = STRING_TEST
     )
 )
 
 val userDbModelList = listOf(
     UserDbModel(
-        img = stringTest,
-        name = stringTest,
-        id = intTest,
-        username = stringTest
+        img = STRING_TEST,
+        name = STRING_TEST,
+        id = INT_TEST,
+        username = STRING_TEST
     )
 )
 
-val userModelList = listOf(
-    UserModel(
-        img = stringTest,
-        name = stringTest,
-        id = intTest,
-        username = stringTest
+val userDomainList = listOf(
+    UserDomainModel(
+        img = STRING_TEST,
+        name = STRING_TEST,
+        id = INT_TEST,
+        username = STRING_TEST
+    )
+)
+
+val userUIList = listOf(
+    UserUIModel(
+        img = STRING_TEST,
+        name = STRING_TEST,
+        id = INT_TEST,
+        username = STRING_TEST
     )
 )

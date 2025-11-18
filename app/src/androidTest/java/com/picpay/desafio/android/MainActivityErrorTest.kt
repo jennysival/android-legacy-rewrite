@@ -9,9 +9,9 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.picpay.desafio.android.testUtils.ToastMatcher
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.ui.MainActivity
 import com.picpay.desafio.android.ui.ViewState
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 import com.picpay.desafio.android.ui.user.viewModel.UserViewModel
 import io.mockk.every
 import io.mockk.mockk
@@ -27,7 +27,7 @@ class MainActivityErrorTest {
 
     @Test
     fun shouldHideLoadingAndShowToastOnError() {
-        val liveData = MutableLiveData<ViewState<List<UserModel>>>()
+        val liveData = MutableLiveData<ViewState<List<UserUIModel>>>()
         liveData.postValue(ViewState.Error(Exception()))
 
         val userViewModel: UserViewModel = mockk(relaxed = true)

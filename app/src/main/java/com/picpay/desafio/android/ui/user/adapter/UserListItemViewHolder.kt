@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.databinding.ListItemUserBinding
-import com.picpay.desafio.android.domain.model.UserModel
+import com.picpay.desafio.android.ui.user.model.UserUIModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -12,7 +12,7 @@ class UserListItemViewHolder(
     val binding: ListItemUserBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(user: UserModel) {
+    fun bind(user: UserUIModel) {
         binding.name.text = user.name
         binding.username.text = user.username
         binding.progressBar.visibility = View.VISIBLE
